@@ -28,6 +28,3 @@ favoriteFood.shift();
 foodElement.innerHTML += `<br>${favoriteFood}</br>`;
 favoriteFood.pop();
 foodElement.innerHTML += `<br>${favoriteFood}</br>`;
-
-
-
