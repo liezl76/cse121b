@@ -15,35 +15,68 @@ function addNumber(){
 document.querySelector('#addNumbers').addEventListener("click",addNumber);
 
 /* Function Expression - Subtract Numbers */
-function subtractNumbers(number1,number2){
+function subtract(number1,number2){
     return number1 - number2;
 }
 
-function handleSubtractClick(){
-    let subtractNumber1 = Number(document.querySelector('#subtract1').value);
-    let subtractNumber2 = Number(document.querySelector('#subtract2').value);
-    document.getElementById('difference').value = subtractNumbers(subtractNumber1, subtractNumber2);
+function subtractNumbers(){
+    let subtract1 = Number(document.querySelector('#subtract1').value);
+    let subtract2 = Number(document.querySelector('#subtract2').value);
+    document.getElementById('difference').value = subtract(subtract1, subtract2);
 }
 
-document.querySelector('#subtractNumbers').addEventListener("click",handleSubtractClick);
+document.querySelector('#subtractNumbers').addEventListener("click",subtractNumbers);
 
 /* Arrow Function - Multiply Numbers */
 function multiplyNumbers(number1,number2){
     return number1 * number2;
 }
 
-function multiplyNumbers
+function multiply(){
+    let factor1 = Number(document.querySelector('#factor1').value);
+    let factor2 = Number(document.querySelector('#factor2').value);
+    document.getElementById('product').value = multiplyNumbers(factor1, factor2);
+}
+
+document.querySelector('#multiplyNumbers').addEventListener('click',multiply);
 
 /* Open Function Use - Divide Numbers */
+function divideNumbers(number1,number2){
+    return number1 / number2;
+}
 
+function divide(){
+    let dividend = Number(document.querySelector('#dividend').value);
+    let divisor = Number(document.querySelector('#divisor').value);
+    document.getElementById('quotient').value = divideNumbers(dividend,divisor);
+}
+
+document.querySelector('#divideNumbers').addEventListener('click',divide);
 
 /* Decision Structure */
+const subtotalInput = document.getElementById('subtotal');
+const memberCheckbox = document.getElementById('member');
+const totalSpan = document.getElementById('total');
+const getTotalButton = document.getElementById('getTotal');
 
+document.querySelector('#getTotal').addEventListener('click', calculateTotal);
+
+function calculateTotal() {
+  const subtotal = parseFloat(subtotalInput.value);
+  const isMember = memberCheckbox.checked;
+  const discount = isMember ? 0.15 : 0;
+  const total = subtotal - (subtotal * discount);
+  totalSpan.textContent = `$ ${total.toFixed(2)}`;
+}
 
 /* ARRAY METHODS - Functional Programming */
 /* Output Source Array */
+let numbersArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+let arrayElement = document.getElementById('array');
+arrayElement.textContent = numbersArray;
 
 /* Output Odds Only Array */
+
 
 /* Output Evens Only Array */
 
