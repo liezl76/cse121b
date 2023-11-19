@@ -72,16 +72,28 @@ function calculateTotal() {
 /* ARRAY METHODS - Functional Programming */
 /* Output Source Array */
 let numbersArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-let arrayElement = document.getElementById('array');
-arrayElement.textContent = numbersArray;
+document.querySelector('#array').textContent = numbersArray;
 
 /* Output Odds Only Array */
-
-
+document.querySelector('#odds').textContent = numbersArray.filter((num) => num % 2 ===1);
 /* Output Evens Only Array */
-
+document.querySelector('#evens').textContent = numbersArray.filter((num) => num % 2 ===0);
 /* Output Sum of Org. Array */
+document.querySelector('sumOfArray').textContent = numbersArray.reduce(sumFunction);
+
+function sumFunction(total, num){
+    return total + num;
+}
 
 /* Output Multiplied by 2 Array */
+document.querySelector('#multiplied').textContent = numbersArray.map(doubleFunction);
 
+function doubleFunction(x){
+    return x*2;
+}
 /* Output Sum of Multiplied by 2 Array */
+document.querySelector('#sumOfMultiplied').textContent = numbersArray.map(doubleFunction).reduce(sumFunction);
+
+function sumFunction(){
+    return numbersArray.reduce((total, num) => total + num, 0);
+}
