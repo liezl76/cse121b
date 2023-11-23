@@ -54,19 +54,14 @@ function divide(){
 document.querySelector('#divideNumbers').addEventListener('click',divide);
 
 /* Decision Structure */
-const subtotalInput = document.getElementById('subtotal');
-const memberCheckbox = document.getElementById('member');
-const totalSpan = document.getElementById('total');
-const getTotalButton = document.getElementById('getTotal');
+document.getElementById('getTotal').addEventListener('click', calculateTotal);
 
-document.querySelector('#getTotal').addEventListener('click', calculateTotal);
-
-function calculateTotal() {
-  const subtotal = parseFloat(subtotalInput.value);
-  const isMember = memberCheckbox.checked;
-  const discount = isMember ? 0.15 : 0;
-  const total = subtotal - (subtotal * discount);
-  document.querySelector('#total').textContent = `$ ${total.toFixed(2)}`;
+    function calculateTotal() {
+        let subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+        let isMember = document.getElementById('member').checked;
+        let discount = isMember ? 0.15 : 0;
+        let total = subtotal - (subtotal * discount);
+        document.getElementById('total').textContent = `$ ${total.toFixed(2)}`;
 }
 
 /* ARRAY METHODS - Functional Programming */
