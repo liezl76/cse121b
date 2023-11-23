@@ -94,6 +94,6 @@ function doubleFunction(x){
 /* Output Sum of Multiplied by 2 Array */
 document.querySelector('#sumOfMultiplied').textContent = numbersArray.map(doubleFunction).reduce(sumFunction);
 
-function sumFunction(){
-    return numbersArray.reduce((total, num) => total + num, 0);
+function sumFunction(total, num){
+    return total + num;
 }
