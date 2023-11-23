@@ -53,13 +53,13 @@ myProfile.hobbies.forEach(hobby => {
 /* Places Lived DataList */
 let placesLivedList = document.getElementById('places-lived');
 myProfile.placesLived.forEach(place => {
-  let term = document.createElement('dt');
-  term.textContent = place.place;
+  let dt = document.createElement('dt');
+  dt.textContent = place.place;
 
-  let description = document.createElement('dd');
-  description.textContent = place.length;
+  let dd = document.createElement('dd');
+  dd.textContent = place.length;
 
-  placesLivedList.appendChild(term);
-  placesLivedList.appendChild(description);
+  placesLivedList.appendChild(dt);
+  placesLivedList.appendChild(dd);
 });
 
