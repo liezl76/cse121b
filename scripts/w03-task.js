@@ -66,7 +66,7 @@ function calculateTotal() {
   const isMember = memberCheckbox.checked;
   const discount = isMember ? 0.15 : 0;
   const total = subtotal - (subtotal * discount);
-  totalSpan.textContent = `$ ${total.toFixed(2)}`;
+  document.querySelector('#total').textContent = `$ ${total.toFixed(2)}`;
 }
 
 /* ARRAY METHODS - Functional Programming */
@@ -79,7 +79,7 @@ document.querySelector('#odds').textContent = numbersArray.filter((num) => num %
 /* Output Evens Only Array */
 document.querySelector('#evens').textContent = numbersArray.filter((num) => num % 2 ===0);
 /* Output Sum of Org. Array */
-document.querySelector('sumOfArray').textContent = numbersArray.reduce(sumFunction);
+document.querySelector('#sumOfArray').textContent = numbersArray.reduce(sumFunction);
 
 function sumFunction(total, num){
     return total + num;
