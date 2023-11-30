@@ -5,8 +5,9 @@ const templesElement = document.getElementById('temples');
 
 const templeList = [];
 
-const displayTemples = (temples) => {
+const displayTemples = (templesArray) => {
     templesArray.forEach((temple) => {
+    
     //Create an HTML <article> element (createElement)
     const templeArticle = document.createElement('article');
 
@@ -29,20 +30,69 @@ const displayTemples = (temples) => {
 };
 
 /* async displayTemples Function */
-
-
-
-
 /* async getTemples Function using fetch()*/
-
+const getTemples = async () => {
+    //
+    const response = await fetch("https://byui-cse.github.io/cse121b-ww-course/resources/temples.json");
+    //
+    const templeData = await response.json();
+    //
+    templeList.push(...templeData);
+    //
+    displayTemples(templeList);
+};
 
 /* reset Function */
+const reset = () => {
+    //Get all <article> elements inside templesElement
+    const articles = templesElement.querySelectorAll('article');
 
+    //Remove each <article> element
+    articles.forEach((article) => {
+        templesElement.removeChild(article);
+    });
+};
+
+reset(); //Call reset to clear the displayed list of temples
 
 /* sortBy Function */
+const sortBy = (temples) => {
+    //Call the reset function to clear the output
+    reset();
 
+    //Obtain the value of the HTML element with the ID of sortBy
+    const filter = document.getElementById('sortBy').value;
 
+    //Use a switch statement to handle different filter cases
+    switch (filter) {
+        case 'utah':
+            //Filter for temples in Utah
+            displayTemples(temples.filter(temple => temple.location.includes('Utah')));
+            break;
+
+        case 'notutah':
+            //Filter for temples outside of Utah
+            displayTemples(temples.filter(temple => !temple.location.includes('Utah')));
+            break;
+
+        case 'older':
+            //Filter for temples built before 1950
+            displayTemples(temples.filter(temple => new Date(temple.dedicated) < new Date(1950, 0, 1)));
+            break;
+
+        case 'all':
+        default:
+            displayTemples(temples); //No filter, display all temples
+            break;
+    }
+};
+
+sortBy(templeList); //Call sortBy and pass the list of temples
 
 getTemples();
 
 /* Event Listener */
+document.querySelector("#sortBy").addEventListener("change", () => {
+    //Call the sortBy function and pass the templeList as the argument
+    sortBy(templeList);
+});
