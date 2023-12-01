@@ -30,12 +30,15 @@ const displayTemples = (templesArray) => {
 };
 
 /* async displayTemples Function */
+
 /* async getTemples Function using fetch()*/
 const getTemples = async () => {
     //
     const response = await fetch("https://byui-cse.github.io/cse121b-ww-course/resources/temples.json");
     //
     const templeData = await response.json();
+
+    console.log(templeData);
     //
     templeList.push(...templeData);
     //
@@ -61,7 +64,7 @@ const sortBy = (temples) => {
     reset();
 
     //Obtain the value of the HTML element with the ID of sortBy
-    const filter = document.getElementById('sortBy').value;
+    const filter = document.getElementById('#sortBy').value;
 
     //Use a switch statement to handle different filter cases
     switch (filter) {
