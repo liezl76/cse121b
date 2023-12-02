@@ -1,7 +1,7 @@
 /* W05: Programming Tasks */
 
 /* Declare and initialize global variables */
-const templesElement = document.getElementById('#temples');
+const templesElement = document.getElementById('temples');
 
 const templeList = [];
 
@@ -11,7 +11,7 @@ const displayTemples = (templesArray) => {
     //Create an HTML <article> element (createElement)
     const templeArticle = document.createElement('article');
 
-    //Create HTML <h3> element and add the temple's templeName property to nis new element
+    //Create HTML <h3> element and add the temple's templeName property to this new element
     const templeNameHeading = document.createElement('h3');
     templeNameHeading.textContent = temple.templeName;
 
@@ -64,7 +64,7 @@ const sortBy = (temples) => {
     reset();
 
     //Obtain the value of the HTML element with the ID of sortBy
-    const filter = document.getElementById('#sortBy').value;
+    const filter = document.getElementById('sortBy').value;
 
     //Use a switch statement to handle different filter cases
     switch (filter) {
