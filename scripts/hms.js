@@ -13,6 +13,7 @@ function addPatient() {
   };
 
   patients.push(newPatient);
+  savePatientsToLocalStorage(); //Save patients to local storage
   displayPatients();
   clearForm();
 }
@@ -62,8 +63,35 @@ function clearForm() {
   document.getElementById('patientForm').reset();
 }
 
+function savePatientsToLocalStorage() {
+  localStorage.setItem('patients', JSON.stringify(patients));
+}
+
+function displayAppointments(appointments) {
+  const appointmentsList = document.getElementById('appointmentsList');
+
+  // Clear the existing list
+  appointmentsList.innerHTML = '';
+
+  appointments.forEach(appointment => {
+    const listItem = document.createElement('li');
+    listItem.innerHTML = `
+      <strong>${appointment.patientName}</strong> - Date: ${appointment.date}, Time: ${appointment.time}
+    `;
+    appointmentsList.appendChild(listItem);
+  });
+}
+
 //
 document.addEventListener('DOMContentLoaded', () => {
+  // Load patients from local storage
+  const storedPatients = localStorage.getItem('patients');
+
+  if (storedPatients) {
+    patients = JSON.parse(storedPatients);
+    displayPatients();
+  }
+
     // Fetch patient data from an external API (replace with your API endpoint)
     fetch('https://api.example.com/patients')
       .then(response => response.json())
