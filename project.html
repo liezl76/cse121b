@@ -29,22 +29,17 @@
 
     <form id="patientForm">
       <label for="patientName">Name:</label>
-      <input type="text" id="patientName" required>
-    
-      <label for="patientAge">Age:</label>
-      <input type="text" id="patientAge" required>
-    
-      <label for="patientCondition">Condition:</label>
-      <input type="text" id="patientCondition" required>
-    
-      <!-- New input fields for appointment details -->
-      <label for="appointmentDate">Appointment Date:</label>
-      <input type="date" id="appointmentDate" required>
-    
-      <label for="appointmentTime">Appointment Time:</label>
-      <input type="time" id="appointmentTime" required>
-    
-      <button type="button" onclick="addPatient()">Add Patient</button>
+    <input type="text" id="patientName" required>
+    <label for="patientAge">Age:</label>
+    <input type="number" id="patientAge" required>
+    <label for="patientCondition">Condition:</label>
+    <input type="text" id="patientCondition" required>
+    <label for="appointmentDate">Appointment Date:</label>
+    <input type="date" id="appointmentDate" required>
+    <label for="appointmentTime">Appointment Time:</label>
+    <input type="time" id="appointmentTime" required>
+
+    <button type="button" onclick="addPatient()">Add Patient</button>
     </form>
 
     <h2>Patient List</h2>
