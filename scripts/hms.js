@@ -96,7 +96,7 @@ function displayAppointments(appointments) {
     loadPatientsFromLocalStorage();
 
     // Fetch patient data from an external API (replace with your API endpoint)
-    fetch('https://api.example.com/patients')
+    fetch('https://github.com/liezl76/cse121b/blob/main/resources/patients.json')
       .then(response => response.json())
       .then(data => {
         // Assuming the API response is an array of patients
