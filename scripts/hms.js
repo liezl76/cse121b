@@ -54,8 +54,8 @@ function addPatient() {
 
 function savePatientToAPI(patient) {
   // Replace 'YOUR_GIST_ID' with the actual Gist ID where you want to store patient data
-  const gistId = 'YOUR_GIST_ID';
-  const apiUrl = `https://api.github.com/gists/${gistId}`;
+  const gistId = 'liezl76';
+  const apiUrl = `https://gist.github.com/liezl76/2d5928619f897c818650d6d9dd296cab#file-patients-json`;
 
   return fetch(apiUrl, {
     method: 'PATCH', // Use PATCH to update an existing Gist
