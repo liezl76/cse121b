@@ -13,4 +13,12 @@ body {
     margin: 10px 0;
     border-radius: 5px;
   }
+
+  /* Add your CSS styles here */
+  .patientCard {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+  }
   

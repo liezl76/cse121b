@@ -13,7 +13,6 @@ function addPatient() {
   };
 
   patients.push(newPatient);
-  savePatientsToLocalStorage(); //Save patients to local storage
   displayPatients();
   clearForm();
 }
@@ -63,8 +62,17 @@ function clearForm() {
   document.getElementById('patientForm').reset();
 }
 
+// Function to save patients to local storage
 function savePatientsToLocalStorage() {
   localStorage.setItem('patients', JSON.stringify(patients));
+}
+
+// Function to load patients from local storage
+function loadPatientsFromLocalStorage() {
+  const storedPatients = localStorage.getItem('patients');
+  if (storedPatients) {
+    patients = JSON.parse(storedPatients);
+  }
 }
 
 function displayAppointments(appointments) {
@@ -83,19 +91,17 @@ function displayAppointments(appointments) {
 }
 
 //
-document.addEventListener('DOMContentLoaded', () => {
-  // Load patients from local storage
-  const storedPatients = localStorage.getItem('patients');
-
-  if (storedPatients) {
-    patients = JSON.parse(storedPatients);
-    displayPatients();
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    // Load patients from local storage
+    loadPatientsFromLocalStorage();
 
     // Fetch patient data from an external API (replace with your API endpoint)
     fetch('https://api.example.com/patients')
       .then(response => response.json())
-      .then(data => displayPatients(data))
+      .then(data => {
+        // Assuming the API response is an array of patients
+        displayPatients(data);
+      })
       .catch(error => console.error('Error fetching data:', error));
   });
   
@@ -118,5 +124,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (patients.length === 0) {
       patientListContainer.innerHTML = '<p>No patients available.</p>';
     }
-  }
+
+    // Function to add a patient
+    function addPatient() {
+    // Your existing addPatient function...
+
+    // Save patients to local storage after adding a patient
+    savePatientsToLocalStorage();
+    }
+}
   

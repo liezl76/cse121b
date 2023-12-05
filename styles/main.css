@@ -311,5 +311,12 @@ footer {
         margin: 0 auto;
         max-width: 950px;
     }
-
+    /* Add your CSS styles here */
+    .patientCard {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+    }
 }
+    
