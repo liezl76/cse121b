@@ -5,16 +5,27 @@ function addPatient() {
   const patientName = document.getElementById('patientName').value;
   const patientAge = document.getElementById('patientAge').value;
   const patientCondition = document.getElementById('patientCondition').value;
+  const patientGender = document.getElementById('patientGender').value;
   const appointmentDate = document.getElementById('appointmentDate').value;
   const appointmentTime = document.getElementById('appointmentTime').value;
-  
+
+  // Generate a unique ID for the new patient
+  const newPatientId = patients.length + 1;
+
   const newPatient = {
+    id: newPatientId,
     name: patientName,
     age: patientAge,
+    gender: patientGender,
     condition: patientCondition,
+    appointments: [{
+      date: appointmentDate,
+      time: appointmentTime,
+      purpose: "General Checkup" // You can customize the purpose as needed
+    }]
   };
 
-  // Save the new patient to the GitHub Gist API
+  // Save the new patient to the GitHub Pages API
   savePatientToAPI(newPatient)
     .then(() => {
       // After successfully saving to API, update the local data
@@ -27,55 +38,24 @@ function addPatient() {
       alert('Failed to save patient data. Please try again.');
     });
 }
-  //Schedule an appointment for the patient
-  const newAppointment = {
-    patientName: patientName,
-    date: appointmentDate,
-    time: appointmentTime,
-  };
-
-  appointments.push(newAppointment);
-  displayAppointments();
-
-  function displayAppointments() {
-    const appointmentsList = document.getElementById('appointmentsList');
-  
-    // Clear the existing list
-    appointmentsList.innerHTML = '';
-  
-    appointments.forEach(appointment => {
-      const listItem = document.createElement('li');
-      listItem.innerHTML = `
-        <strong>${appointment.patientName}</strong> - Date: ${appointment.date}, Time: ${appointment.time}
-      `;
-      appointmentsList.appendChild(listItem);
-    });
-  }
 
 function savePatientToAPI(patient) {
-  // Replace 'YOUR_GIST_ID' with the actual Gist ID where you want to store patient data
-  const gistId = 'liezl76';
-  const apiUrl = `https://gist.github.com/liezl76/2d5928619f897c818650d6d9dd296cab#file-patients-json`;
+  const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
 
   return fetch(apiUrl, {
-    method: 'PATCH', // Use PATCH to update an existing Gist
+    method: 'POST', // Use POST for creating new data
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer YOUR_GITHUB_TOKEN', // Replace with your GitHub token
     },
     body: JSON.stringify({
-      files: {
-        'patients.json': {
-          content: JSON.stringify([...patients, patient]),
-        },
-      },
+      patients: [...patients, patient]
     }),
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
-    }
-  });
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+    });
 }
 
 function deletePatient(index) {
@@ -141,14 +121,13 @@ function displayPatients() {
   });
 }
 
-// Load patients from the GitHub Gist API on page load
+// Load patients from the GitHub Pages API on page load
 document.addEventListener('DOMContentLoaded', () => {
   loadPatientsFromAPI();
 });
 
 function loadPatientsFromAPI() {
-  const gistId = 'YOUR_GIST_ID';
-  const apiUrl = `https://api.github.com/gists/${gistId}`;
+  const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
 
   fetch(apiUrl)
     .then(response => {
@@ -158,12 +137,9 @@ function loadPatientsFromAPI() {
       return response.json();
     })
     .then(data => {
-      // Assuming the patients data is stored in a file named 'patients.json'
-      const patientsFile = data.files['patients.json'];
-      if (patientsFile) {
-        patients = JSON.parse(patientsFile.content);
-        displayPatients();
-      }
+      // Assuming the patients data is stored in the 'patients' array
+      patients = data.patients || [];
+      displayPatients();
     })
     .catch(error => {
       console.error('Error fetching patient data from API:', error);
