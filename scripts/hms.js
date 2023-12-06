@@ -1,3 +1,6 @@
+// Import the 'uuid' librarye
+import { v4 as uuidv4 } from 'uuid';
+
 let patients = [];
 let appointments = [];
 
@@ -9,8 +12,8 @@ function addPatient() {
   const appointmentDate = document.getElementById('appointmentDate').value;
   const appointmentTime = document.getElementById('appointmentTime').value;
 
-  // Generate a unique ID for the new patient
-  const newPatientId = patients.length + 1;
+  // Generate a unique ID for the new patient using uuidv4()
+  const newPatientId = uuidv4();
 
   const newPatient = {
     id: newPatientId,
