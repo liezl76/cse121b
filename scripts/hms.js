@@ -1,6 +1,3 @@
-// Import the 'uuid' library
-import { v4 as uuidv4 } from 'uuid';
-
 let patients = [];
 
 function addPatient() {
