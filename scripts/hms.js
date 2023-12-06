@@ -77,21 +77,15 @@ function deletePatient(index) {
 }
 
 function deletePatientFromAPI(index) {
-  const gistId = 'YOUR_GIST_ID';
-  const apiUrl = `https://api.github.com/gists/${gistId}`;
+  const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
 
   return fetch(apiUrl, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer YOUR_GITHUB_TOKEN',
     },
     body: JSON.stringify({
-      files: {
-        'patients.json': {
-          content: JSON.stringify([...patients.slice(0, index), ...patients.slice(index + 1)]),
-        },
-      },
+      patients: [...patients.slice(0, index), ...patients.slice(index + 1)],
     }),
   })
   .then(response => {
