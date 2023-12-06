@@ -1,4 +1,4 @@
-// Import the 'uuid' librarye
+// Import the 'uuid' library
 import { v4 as uuidv4 } from 'uuid';
 
 let patients = [];
@@ -40,6 +40,10 @@ function addPatient() {
       console.error('Error saving patient to API:', error);
       alert('Failed to save patient data. Please try again.');
     });
+}
+
+function clearForm() {
+  document.getElementById('patientForm').reset();
 }
 
 function savePatientToAPI(patient) {

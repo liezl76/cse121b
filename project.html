@@ -29,48 +29,44 @@
     <form id="patientForm">
       <label for="patientName">Name:</label>
       <input type="text" id="patientName" required>
-      <br>
-  
+
       <label for="patientAge">Age:</label>
       <input type="number" id="patientAge" required>
-      <br>
-  
-      <label for="patientGender">Gender:</label>
-      <input type="text" id="patientGender" required>
-      <br>
-  
-      <label for="patientCondition">Medical Condition:</label>
+
+      <label for="patientCondition">Condition (comma-separated):</label>
       <input type="text" id="patientCondition" required>
-      <br>
-  
+
+      <label for="patientGender">Gender:</label>
+      <select id="patientGender" required>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+      </select>
+
       <label for="appointmentDate">Appointment Date:</label>
       <input type="date" id="appointmentDate" required>
-      <br>
-  
+
       <label for="appointmentTime">Appointment Time:</label>
       <input type="time" id="appointmentTime" required>
-      <br>
 
-      <label for="purpose">Purpose:</label>
-      <input type="text" id="purpose" required>
-      <br>
-  
       <button type="button" onclick="addPatient()">Add Patient</button>
+      <button type="button" onclick="clearForm()">Clear Form</button>
     </form>
-  
-    <h2>Patients</h2>
+
+    <h2>Patients List</h2>
     <ul id="patientsList"></ul>
-  
-    <h2>Appointments</h2>
-    <ul id="appointmentsList"></ul>
+
+    <h2>Patient Appointments</h2>
+    <div id="patientList"></div>
   </main>
 
   <footer>
     &copy;<span id="year"></span> | Project | CSE 121b
   </footer>
+  <!-- Include the uuid library from a CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/uuid@3.4.0/dist/umd/uuidv4.min.js"></script>
   <script src="scripts/hms.js"></script>
   <script src="scripts/main.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2"></script>
   <script>
     document.getElementById("year").innerHTML = new Date().getFullYear();
   </script>
