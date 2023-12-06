@@ -1,5 +1,2 @@
-const emojis = ['ball', 'running', 'pizza']
-
-emojis.forEach(emojis => {
-    console.log(`I love ${emojis}`)
-})
+console.log("Hello World");
+alert("hello");
