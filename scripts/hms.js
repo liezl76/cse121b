@@ -20,7 +20,7 @@ function addPatient() {
     name: patientName,
     age: patientAge,
     gender: patientGender,
-    condition: patientCondition,
+    medical_conditions: patientCondition.split(','), // Assuming conditions are comma-separated
     appointments: [{
       date: appointmentDate,
       time: appointmentTime,
