@@ -135,7 +135,7 @@ function loadPatientsFromAPI() {
       return response.json();
     })
     .then(data => {
-      // Assuming the patients data is stored in the 'patients' array
+      // Patients data is stored in the 'patients' array
       patients = data.patients || [];
       displayPatients();
     })
