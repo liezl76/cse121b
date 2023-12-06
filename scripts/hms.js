@@ -2,7 +2,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
 let patients = [];
-let appointments = [];
 
 function addPatient() {
   const patientName = document.getElementById('patientName').value;
@@ -18,14 +17,16 @@ function addPatient() {
   const newPatient = {
     id: newPatientId,
     name: patientName,
-    age: patientAge,
+    age: parseInt(patientAge), // Parse age as an integer
     gender: patientGender,
-    medical_conditions: patientCondition.split(','), // Assuming conditions are comma-separated
-    appointments: [{
-      date: appointmentDate,
-      time: appointmentTime,
-      purpose: "General Checkup" // You can customize the purpose as needed
-    }]
+    medical_conditions: patientCondition.split(',').map(condition => condition.trim()), // Trim conditions
+    appointments: [
+      {
+        date: appointmentDate,
+        time: appointmentTime,
+        purpose: "General Checkup" // You can customize the purpose as needed
+      }
+    ]
   };
 
   // Save the new patient to the GitHub Pages API
@@ -50,7 +51,7 @@ function savePatientToAPI(patient) {
   const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
 
   return fetch(apiUrl, {
-    method: 'POST', // Use POST for creating new data
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -69,7 +70,7 @@ function deletePatient(index) {
   const confirmed = confirm('Are you sure you want to delete this patient?');
 
   if (confirmed) {
-    // Delete the patient from the GitHub Gist API
+    // Delete the patient from the GitHub Pages API
     deletePatientFromAPI(index)
       .then(() => {
         // After successfully deleting from API, update the local data
@@ -95,15 +96,11 @@ function deletePatientFromAPI(index) {
       patients: [...patients.slice(0, index), ...patients.slice(index + 1)],
     }),
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
-    }
-  });
-}
-
-function clearForm() {
-  document.getElementById('patientForm').reset();
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+    });
 }
 
 function displayPatients() {
@@ -115,7 +112,7 @@ function displayPatients() {
   patients.forEach((patient, index) => {
     const listItem = document.createElement('li');
     listItem.innerHTML = `
-      <strong>${patient.name}</strong> (Age: ${patient.age}, Condition: ${patient.condition})
+      <strong>${patient.name}</strong> (Age: ${patient.age}, Conditions: ${patient.medical_conditions.join(', ')})
       <button onclick="deletePatient(${index})">Delete</button>
     `;
     patientsList.appendChild(listItem);
