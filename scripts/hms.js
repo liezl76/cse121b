@@ -26,9 +26,12 @@ function addPatient() {
     ]
   };
 
+  console.log("new patient data:", newPatients);
+
   // Save the new patient to the GitHub Pages API
   savePatientToAPI(newPatient)
     .then(() => {
+      console.log("Patient successfully added to the API.");
       // After successfully saving to API, update the local data
       patients.push(newPatient);
       displayPatients();
