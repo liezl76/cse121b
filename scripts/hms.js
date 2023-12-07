@@ -72,7 +72,7 @@ function deletePatient(index) {
   const confirmed = confirm('Are you sure you want to delete this patient?');
 
   if (confirmed) {
-    // Delete the patient from the GitHub Pages API
+    //Delete the patient from the GitHub Pages API
     deletePatientFromAPI(index)
       .then(() => {
         // After successfully deleting from API, update the local data
@@ -107,42 +107,60 @@ function deletePatientFromAPI(index) {
 
 function displayPatients() {
   const patientsList = document.getElementById('patientsList');
+  const patientAppointmentsList = document.getElementById('patientAppointmentsList');
 
   // Clear the existing list
   patientsList.innerHTML = '';
+  patientAppointmentsList.innerHTML = '';
 
   patients.forEach((patient, index) => {
+    // Display Patient list
     const listItem = document.createElement('li');
     listItem.innerHTML = `
       <strong>${patient.name}</strong> (Age: ${patient.age}, Conditions: ${patient.medical_conditions.join(', ')})
       <button onclick="deletePatient(${index})">Delete</button>
     `;
     patientsList.appendChild(listItem);
+
+    // Display appointments for each patient
+    const appointmentsListItem = document.createElement('li');
+    appointmentsListItem.innerHTML = `
+      <strong>${patient.name}'s Appointments</strong>:
+      <ul>
+        ${patient.appointments.map(appointment => `
+          <li>${appointment.date} at ${appointment.time} - ${appointment.purpose}</li>
+        `).join('')}
+      </ul>
+    `;
+    patientAppointmentsList.appendChild(appointmentsListItem);
   });
 }
 
-// Load patients from the GitHub Pages API on page load
-document.addEventListener('DOMContentLoaded', () => {
-  loadPatientsFromAPI();
+//Load patients from the GitHub Pages API on page load
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadPatientsFromAPI();
+  displayPatients();
 });
 
-function loadPatientsFromAPI() {
+async function loadPatientsFromAPI() {
   const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
 
-  fetch(apiUrl)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      // Patients data is stored in the 'patients' array
-      patients = data.patients || [];
-      displayPatients();
-    })
-    .catch(error => {
-      console.error('Error fetching patient data from API:', error);
-      alert('Failed to load patient data. Please try again.');
-    });
+  try {
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    //Patients data is stored in the 'patients' array
+    patients = data.patients || [];
+
+    //Display patient after loading data
+    displayPatients();
+
+  } catch (error) {
+    console.error('Error fetching patient data from API:', error);
+    alert('Failed to load patient data. Please try again.');
+  }
 }
