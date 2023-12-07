@@ -18,7 +18,7 @@ function addPatient() {
     name: patientName,
     age: parseInt(patientAge), //Parse age as an integer
     gender: patientGender,
-    medical_conditions: patientCondition.split(',').map(condition => condition.trim()), // Trim conditions
+    medical_conditions: patientCondition.split(',').map(condition => condition.trim()), //Trim conditions
     appointments: [
       {
         date: appointmentDate,
@@ -34,7 +34,7 @@ function addPatient() {
   savePatientToAPI(newPatient)
     .then(() => {
       console.log("Patient successfully added to the API.");
-      // After successfully saving to API, update the local data
+      //After successfully saving to API, update the local data
       patients.push(newPatient);
       displayPatients();
       clearForm();
@@ -75,7 +75,7 @@ function deletePatient(index) {
     //Delete the patient from the GitHub Pages API
     deletePatientFromAPI(index)
       .then(() => {
-        // After successfully deleting from API, update the local data
+        //After successfully deleting from API, update the local data
         patients.splice(index, 1);
         displayPatients();
       })
