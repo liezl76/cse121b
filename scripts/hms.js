@@ -1,5 +1,5 @@
 let patients = [];
-let nextPatientId = 2023001; //Starting patient ID
+let nextPatientId = 2023004; //Starting patient ID
 
 function addPatient() {
   const patientName = document.getElementById('patientName').value;
