@@ -9,28 +9,28 @@ function addPatient() {
   const appointmentDate = document.getElementById('appointmentDate').value;
   const appointmentTime = document.getElementById('appointmentTime').value;
 
-  // Generate a unique ID for the new patient using uuidv4()
+  //Generate a unique ID for the new patient using uuidv4()
   const newPatientId = nextPatientId++;
-  const formattedPatientId = `P${newPatientId}`; // Format the ID as needed
+  const formattedPatientId = `P${newPatientId}`; //Format the ID as needed
 
   const newPatient = {
     id: newPatientId,
     name: patientName,
-    age: parseInt(patientAge), // Parse age as an integer
+    age: parseInt(patientAge), //Parse age as an integer
     gender: patientGender,
     medical_conditions: patientCondition.split(',').map(condition => condition.trim()), // Trim conditions
     appointments: [
       {
         date: appointmentDate,
         time: appointmentTime,
-        purpose: "General Checkup" // You can customize the purpose as needed
+        purpose: "General Checkup" //You can customize the purpose as needed
       }
     ]
   };
 
   console.log("new patient data:", newPatient);
 
-  // Save the new patient to the GitHub Pages API
+  //Save the new patient to the GitHub Pages API
   savePatientToAPI(newPatient)
     .then(() => {
       console.log("Patient successfully added to the API.");
@@ -109,12 +109,12 @@ function displayPatients() {
   const patientsList = document.getElementById('patientsList');
   const patientAppointmentsList = document.getElementById('patientAppointmentsList');
 
-  // Clear the existing list
+  //Clear the existing list
   patientsList.innerHTML = '';
   patientAppointmentsList.innerHTML = '';
 
   patients.forEach((patient, index) => {
-    // Display Patient list
+    //Display Patient list
     const listItem = document.createElement('li');
     listItem.innerHTML = `
       <strong>${patient.name}</strong> (Age: ${patient.age}, Conditions: ${patient.medical_conditions.join(', ')})
@@ -122,7 +122,7 @@ function displayPatients() {
     `;
     patientsList.appendChild(listItem);
 
-    // Display appointments for each patient
+    //Display appointments for each patient
     const appointmentsListItem = document.createElement('li');
     appointmentsListItem.innerHTML = `
       <strong>${patient.name}'s Appointments</strong>:
