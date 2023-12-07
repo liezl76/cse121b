@@ -1,4 +1,5 @@
 let patients = [];
+let nextPatientId = 2023001; //Starting patient ID
 
 function addPatient() {
   const patientName = document.getElementById('patientName').value;
@@ -9,7 +10,8 @@ function addPatient() {
   const appointmentTime = document.getElementById('appointmentTime').value;
 
   // Generate a unique ID for the new patient using uuidv4()
-  const newPatientId = uuidv4();
+  const newPatientId = nextPatientId++;
+  const formattedPatientId = `P${newPatientId}`; // Format the ID as needed
 
   const newPatient = {
     id: newPatientId,
@@ -26,7 +28,7 @@ function addPatient() {
     ]
   };
 
-  console.log("new patient data:", newPatients);
+  console.log("new patient data:", newPatient);
 
   // Save the new patient to the GitHub Pages API
   savePatientToAPI(newPatient)
