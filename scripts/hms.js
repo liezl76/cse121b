@@ -1,5 +1,5 @@
 let patients = [];
-let nextPatientId = 2023004; //Starting patient ID
+let nextPatientId = 2023004; // Starting patient ID
 
 function addPatient() {
   const patientName = document.getElementById('patientName').value;
@@ -9,32 +9,32 @@ function addPatient() {
   const appointmentDate = document.getElementById('appointmentDate').value;
   const appointmentTime = document.getElementById('appointmentTime').value;
 
-  //Generate a unique ID for the new patient using uuidv4()
+  // Generate a unique ID for the new patient
   const newPatientId = nextPatientId++;
-  const formattedPatientId = `P${newPatientId}`; //Format the ID as needed
+  const formattedPatientId = `P${newPatientId}`;
 
   const newPatient = {
     id: newPatientId,
     name: patientName,
-    age: parseInt(patientAge), //Parse age as an integer
+    age: parseInt(patientAge), // Parse age as an integer
     gender: patientGender,
-    medical_conditions: patientCondition.split(',').map(condition => condition.trim()), //Trim conditions
+    medical_conditions: patientCondition.split(',').map(condition => condition.trim()), // Trim conditions
     appointments: [
       {
         date: appointmentDate,
         time: appointmentTime,
-        purpose: "General Checkup" //You can customize the purpose as needed
+        purpose: "General Checkup" // Customize the purpose as needed
       }
     ]
   };
 
   console.log("new patient data:", newPatient);
 
-  //Save the new patient to the GitHub Pages API
+  // Save the new patient to the GitHub Pages API
   savePatientToAPI(newPatient)
     .then(() => {
       console.log("Patient successfully added to the API.");
-      //After successfully saving to API, update the local data
+      // After successfully saving to API, update the local data
       patients.push(newPatient);
       displayPatients();
       clearForm();
@@ -72,10 +72,10 @@ function deletePatient(index) {
   const confirmed = confirm('Are you sure you want to delete this patient?');
 
   if (confirmed) {
-    //Delete the patient from the GitHub Pages API
+    // Delete the patient from the GitHub Pages API
     deletePatientFromAPI(index)
       .then(() => {
-        //After successfully deleting from API, update the local data
+        // After successfully deleting from API, update the local data
         patients.splice(index, 1);
         displayPatients();
       })
@@ -109,12 +109,12 @@ function displayPatients() {
   const patientsList = document.getElementById('patientsList');
   const patientAppointmentsList = document.getElementById('patientAppointmentsList');
 
-  //Clear the existing list
+  // Clear the existing list
   patientsList.innerHTML = '';
   patientAppointmentsList.innerHTML = '';
 
   patients.forEach((patient, index) => {
-    //Display Patient list
+    // Display Patient list
     const listItem = document.createElement('li');
     listItem.innerHTML = `
       <strong>${patient.name}</strong> (Age: ${patient.age}, Conditions: ${patient.medical_conditions.join(', ')})
@@ -122,7 +122,7 @@ function displayPatients() {
     `;
     patientsList.appendChild(listItem);
 
-    //Display appointments for each patient
+    // Display appointments for each patient
     const appointmentsListItem = document.createElement('li');
     appointmentsListItem.innerHTML = `
       <strong>${patient.name}'s Appointments</strong>:
@@ -136,10 +136,19 @@ function displayPatients() {
   });
 }
 
-//Load patients from the GitHub Pages API on page load
+// Load patients from the GitHub Pages API on page load
 document.addEventListener('DOMContentLoaded', async () => {
-  await loadPatientsFromAPI();
-  displayPatients();
+  try {
+    await loadPatientsFromAPI();
+    displayPatients();
+
+    // Add event listeners after loading the DOM
+    document.getElementById('addPatientBtn').addEventListener('click', addPatient);
+    document.getElementById('clearFormBtn').addEventListener('click', clearForm);
+  } catch (error) {
+    console.error('Error during initialization:', error);
+    alert('Failed to initialize. Please try again.');
+  }
 });
 
 async function loadPatientsFromAPI() {
@@ -153,14 +162,9 @@ async function loadPatientsFromAPI() {
     }
 
     const data = await response.json();
-    //Patients data is stored in the 'patients' array
     patients = data.patients || [];
 
-    //Display patient after loading data
-    displayPatients();
-
   } catch (error) {
-    console.error('Error fetching patient data from API:', error);
-    alert('Failed to load patient data. Please try again.');
+    throw new Error(`Error fetching patient data from API: ${error.message}`);
   }
 }
