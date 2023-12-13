@@ -1,6 +1,36 @@
 let patients = [];
 let nextPatientId = 2023004; // Starting patient ID
 
+const githubApiUrl = 'https://api.github.com/repos/liezl76/host_api/contents/patients.json';
+const personalAccessToken = 'ghp_qTreVSCay021UJVUygB40nbGrI5gc41df4Bw';
+
+async function savePatientToGitHub(patient) {
+  const content = btoa(JSON.stringify({ patients: [...patients, patient] }));
+
+  try {
+    const response = await fetch(githubApiUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${personalAccessToken}`,
+      },
+      body: JSON.stringify({
+        message: 'Add new patient data',
+        content: content,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`GitHub API request failed with status ${response.status}`);
+    }
+
+    console.log('Patient successfully added to GitHub.');
+  } catch (error) {
+    console.error('Error saving patient to GitHub:', error);
+    alert('Failed to save patient data to GitHub. Please try again.');
+  }
+}
+
 function addPatient() {
   const patientName = document.getElementById('patientName').value;
   const patientAge = document.getElementById('patientAge').value;
@@ -9,63 +39,41 @@ function addPatient() {
   const appointmentDate = document.getElementById('appointmentDate').value;
   const appointmentTime = document.getElementById('appointmentTime').value;
 
-  // Generate a unique ID for the new patient
   const newPatientId = nextPatientId++;
-  const formattedPatientId = `P${newPatientId}`;
 
   const newPatient = {
     id: newPatientId,
     name: patientName,
-    age: parseInt(patientAge), // Parse age as an integer
+    age: parseInt(patientAge),
     gender: patientGender,
-    medical_conditions: patientCondition.split(',').map(condition => condition.trim()), // Trim conditions
+    medical_conditions: patientCondition.split(',').map(condition => condition.trim()),
     appointments: [
       {
         date: appointmentDate,
         time: appointmentTime,
-        purpose: "General Checkup" // Customize the purpose as needed
+        purpose: "General Checkup"
       }
     ]
   };
 
   console.log("new patient data:", newPatient);
 
-  // Save the new patient to the GitHub Pages API
-  savePatientToAPI(newPatient)
+  // Save the new patient to both GitHub and local data
+  savePatientToGitHub(newPatient)
     .then(() => {
-      console.log("Patient successfully added to the API.");
-      // After successfully saving to API, update the local data
+      // After successfully saving to GitHub, update the local data
       patients.push(newPatient);
       displayPatients();
       clearForm();
     })
     .catch(error => {
-      console.error('Error saving patient to API:', error);
-      alert('Failed to save patient data. Please try again.');
+      console.error('Error saving patient to GitHub:', error);
+      alert('Failed to save patient data to GitHub. Please try again.');
     });
 }
 
 function clearForm() {
   document.getElementById('patientForm').reset();
-}
-
-function savePatientToAPI(patient) {
-  const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
-
-  return fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      patients: [...patients, patient]
-    }),
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-    });
 }
 
 function deletePatient(index) {
@@ -86,7 +94,7 @@ function deletePatient(index) {
   }
 }
 
-function deletePatientFromAPI(index) {
+async function deletePatientFromAPI(index) {
   const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
 
   return fetch(apiUrl, {
@@ -136,10 +144,10 @@ function displayPatients() {
   });
 }
 
-// Load patients from the GitHub Pages API on page load
+// Load patients from the GitHub API on page load
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    await loadPatientsFromAPI();
+    await loadPatientsFromGitHub();
     displayPatients();
 
     // Add event listeners after loading the DOM
@@ -151,20 +159,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-async function loadPatientsFromAPI() {
-  const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
-
+async function loadPatientsFromGitHub() {
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(githubApiUrl);
 
     if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
+      throw new Error(`GitHub API request failed with status ${response.status}`);
     }
 
     const data = await response.json();
     patients = data.patients || [];
 
   } catch (error) {
-    throw new Error(`Error fetching patient data from API: ${error.message}`);
+    throw new Error(`Error fetching patient data from GitHub: ${error.message}`);
   }
 }
