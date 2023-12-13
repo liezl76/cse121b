@@ -32,6 +32,9 @@ function addPatient() {
   patients.push(newPatient);
   displayPatients();
   clearForm();
+
+  // Update the patients.json file on GitHub
+  updatePatientsFile(patients);
 }
 
 function clearForm() {
@@ -45,6 +48,9 @@ function deletePatient(index) {
     // After successfully deleting from local data, update the displayed patients
     patients.splice(index, 1);
     displayPatients();
+
+    // Update the patients.json file on GitHub
+    updatePatientsFile(patients);
   }
 }
 
@@ -106,5 +112,36 @@ async function loadPatientsFromGitHub() {
     patients = data.patients || [];
   } catch (error) {
     throw new Error(`Error fetching patient data from GitHub: ${error.message}`);
+  }
+}
+
+// Function to update patients.json file on GitHub
+async function updatePatientsFile(data) {
+  const apiUrl = 'https://api.github.com/repos/liezl76/host_api/contents/patients.json';
+  const personalAccessToken = 'ghp_qTreVSCay021UJVUygB40nbGrI5gc41df4Bw';
+
+  const content = btoa(JSON.stringify({ patients: data }));
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${personalAccessToken}`,
+      },
+      body: JSON.stringify({
+        message: 'Update patients.json',
+        content: content,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`GitHub API request failed with status ${response.status}`);
+    }
+
+    console.log('Patients.json successfully updated on GitHub.');
+  } catch (error) {
+    console.error('Error updating patients.json on GitHub:', error);
+    alert('Failed to update patients.json on GitHub. Please try again.');
   }
 }
