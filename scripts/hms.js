@@ -1,36 +1,6 @@
 let patients = [];
 let nextPatientId = 2023004; // Starting patient ID
 
-const githubApiUrl = 'https://api.github.com/repos/liezl76/host_api/contents/patients.json';
-const personalAccessToken = 'ghp_qTreVSCay021UJVUygB40nbGrI5gc41df4Bw';
-
-async function savePatientToGitHub(patient) {
-  const content = btoa(JSON.stringify({ patients: [...patients, patient] }));
-
-  try {
-    const response = await fetch(githubApiUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${personalAccessToken}`,
-      },
-      body: JSON.stringify({
-        message: 'Add new patient data',
-        content: content,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`GitHub API request failed with status ${response.status}`);
-    }
-
-    console.log('Patient successfully added to GitHub.');
-  } catch (error) {
-    console.error('Error saving patient to GitHub:', error);
-    alert('Failed to save patient data to GitHub. Please try again.');
-  }
-}
-
 function addPatient() {
   const patientName = document.getElementById('patientName').value;
   const patientAge = document.getElementById('patientAge').value;
@@ -58,18 +28,10 @@ function addPatient() {
 
   console.log("new patient data:", newPatient);
 
-  // Save the new patient to both GitHub and local data
-  savePatientToGitHub(newPatient)
-    .then(() => {
-      // After successfully saving to GitHub, update the local data
-      patients.push(newPatient);
-      displayPatients();
-      clearForm();
-    })
-    .catch(error => {
-      console.error('Error saving patient to GitHub:', error);
-      alert('Failed to save patient data to GitHub. Please try again.');
-    });
+  // Save the new patient to the local data
+  patients.push(newPatient);
+  displayPatients();
+  clearForm();
 }
 
 function clearForm() {
@@ -80,37 +42,10 @@ function deletePatient(index) {
   const confirmed = confirm('Are you sure you want to delete this patient?');
 
   if (confirmed) {
-    // Delete the patient from the GitHub Pages API
-    deletePatientFromAPI(index)
-      .then(() => {
-        // After successfully deleting from API, update the local data
-        patients.splice(index, 1);
-        displayPatients();
-      })
-      .catch(error => {
-        console.error('Error deleting patient from API:', error);
-        alert('Failed to delete patient data. Please try again.');
-      });
+    // After successfully deleting from local data, update the displayed patients
+    patients.splice(index, 1);
+    displayPatients();
   }
-}
-
-async function deletePatientFromAPI(index) {
-  const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
-
-  return fetch(apiUrl, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      patients: [...patients.slice(0, index), ...patients.slice(index + 1)],
-    }),
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-    });
 }
 
 function displayPatients() {
@@ -144,7 +79,7 @@ function displayPatients() {
   });
 }
 
-// Load patients from the GitHub API on page load
+// Load patients from the GitHub Pages hosted patients.json on page load
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     await loadPatientsFromGitHub();
@@ -161,15 +96,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadPatientsFromGitHub() {
   try {
-    const response = await fetch(githubApiUrl);
+    const response = await fetch('https://liezl76.github.io/host_api/patients.json');
 
     if (!response.ok) {
-      throw new Error(`GitHub API request failed with status ${response.status}`);
+      throw new Error(`Failed to fetch patients data with status ${response.status}`);
     }
 
     const data = await response.json();
     patients = data.patients || [];
-
   } catch (error) {
     throw new Error(`Error fetching patient data from GitHub: ${error.message}`);
   }
