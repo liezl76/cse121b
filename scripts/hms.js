@@ -174,3 +174,9 @@ async function loadPatientsFromGitHub() {
     throw new Error(`Error fetching patient data from GitHub: ${error.message}`);
   }
 }
+
+// Register event listeners after loading the DOM
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('addPatientBtn').addEventListener('click', addPatient);
+  document.getElementById('clearFormBtn').addEventListener('click', clearForm);
+});
