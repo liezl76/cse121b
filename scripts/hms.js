@@ -149,14 +149,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     await loadPatientsFromGitHub();
     displayPatients();
-
-    // Add event listeners after loading the DOM
-    document.getElementById('addPatientBtn').addEventListener('click', addPatient);
-    document.getElementById('clearFormBtn').addEventListener('click', clearForm);
   } catch (error) {
     console.error('Error during initialization:', error);
     alert('Failed to initialize. Please try again.');
   }
+
+  // Add event listeners after loading the DOM
+  document.getElementById('addPatientBtn').addEventListener('click', addPatient);
+  document.getElementById('clearFormBtn').addEventListener('click', clearForm);
 });
 
 async function loadPatientsFromGitHub() {
@@ -174,9 +174,3 @@ async function loadPatientsFromGitHub() {
     throw new Error(`Error fetching patient data from GitHub: ${error.message}`);
   }
 }
-
-// Register event listeners after loading the DOM
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('addPatientBtn').addEventListener('click', addPatient);
-  document.getElementById('clearFormBtn').addEventListener('click', clearForm);
-});
