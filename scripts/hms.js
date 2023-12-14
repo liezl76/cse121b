@@ -118,7 +118,7 @@ async function loadPatientsFromGitHub() {
 // Function to update patients.json file on GitHub
 async function updatePatientsFile(data) {
   const apiUrl = 'https://liezl76.github.io/host_api/patients.json';
-  const personalAccessToken = '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';
+  const personalAccessToken = 'ghp_qTreVSCay021UJVUygB40nbGrI5gc41df4Bw';
 
   const content = btoa(JSON.stringify({ patients: data }));
 
