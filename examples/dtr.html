@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Time Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #tasks {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Daily Time Management</h1>
+
+  <div id="tasks">
+    <h2>Tasks</h2>
+    <label for="taskName">Task Name:</label>
+    <input type="text" id="taskName" placeholder="Enter task name">
+
+    <label for="taskDuration">Duration (minutes):</label>
+    <input type="number" id="taskDuration" placeholder="Enter task duration">
+
+    <button onclick="addTask()">Add Task</button>
+  </div>
+
+  <div id="schedule">
+    <h2>Daily Schedule</h2>
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    function addTask() {
+      var taskName = document.getElementById('taskName').value;
+      var taskDuration = parseInt(document.getElementById('taskDuration').value, 10);
+
+      if (taskName && !isNaN(taskDuration) && taskDuration > 0) {
+        var taskList = document.getElementById('taskList');
+        var listItem = document.createElement('li');
+        listItem.textContent = `${taskName} - ${taskDuration} minutes`;
+        taskList.appendChild(listItem);
+
+        updateSchedule();
+      } else {
+        alert('Please enter valid task details.');
+      }
+    }
+
+    function updateSchedule() {
+      var taskList = document.getElementById('taskList');
+      var tasks = taskList.getElementsByTagName('li');
+      var totalTime = 0;
+
+      for (var i = 0; i < tasks.length; i++) {
+        var duration = tasks[i].textContent.split('-')[1].trim().split(' ')[0];
+        totalTime += parseInt(duration, 10);
+      }
+
+      alert(`Total time scheduled: ${totalTime} minutes`);
+    }
+  </script>
+
+</body>
+</html>
