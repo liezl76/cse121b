@@ -11,6 +11,9 @@
     #tasks {
       margin-bottom: 20px;
     }
+    .taskItem {
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -31,38 +34,88 @@
   <div id="schedule">
     <h2>Daily Schedule</h2>
     <ul id="taskList"></ul>
+    <p id="output"></p>
   </div>
 
   <script>
     function addTask() {
-      var taskName = document.getElementById('taskName').value;
-      var taskDuration = parseInt(document.getElementById('taskDuration').value, 10);
-
+      let taskName = document.getElementById('taskName').value;
+      let taskDuration = parseInt(document.getElementById('taskDuration').value, 10);
+  
       if (taskName && !isNaN(taskDuration) && taskDuration > 0) {
-        var taskList = document.getElementById('taskList');
-        var listItem = document.createElement('li');
-        listItem.textContent = `${taskName} - ${taskDuration} minutes`;
+        const taskList = document.getElementById('taskList');
+        const listItem = document.createElement('li');
+        listItem.className = 'taskItem';
+  
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = function() {
+          taskList.removeChild(listItem);
+          updateSchedule();
+        };
+  
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.onclick = function() {
+          const newTaskName = prompt('Enter new task name:', taskName);
+          const newTaskDuration = parseInt(prompt('Enter new task duration (minutes):', taskDuration), 10);
+  
+          if (newTaskName && !isNaN(newTaskDuration) && newTaskDuration > 0) {
+            taskName = newTaskName;
+            taskDuration = newTaskDuration;
+            listItem.textContent = `${taskName} - ${taskDuration} minutes`;
+            updateSchedule();
+          } else {
+            alert('Invalid input. Task not updated.');
+          }
+        };
+  
+        listItem.textContent = `${taskName} - ${taskDuration} minutes `;
+        listItem.appendChild(deleteButton);
+        listItem.appendChild(editButton);
         taskList.appendChild(listItem);
-
+  
         updateSchedule();
       } else {
         alert('Please enter valid task details.');
       }
     }
-
+  
+    function markTaskAsDone() {
+      const taskList = document.getElementById('taskList');
+      const tasks = taskList.getElementsByClassName('taskItem');
+      
+      // Prompt user to select a task to mark as done
+      let selectedTask = prompt('Enter the task name to mark as done:');
+      
+      for (let i = 0; i < tasks.length; i++) {
+        const taskText = tasks[i].textContent.split('-')[0].trim();
+        
+        if (taskText === selectedTask) {
+          // Mark the task as done
+          tasks[i].textContent += ' (Done)';
+          updateSchedule();
+          return; // exit the loop once task is marked as done
+        }
+      }
+  
+      // If the loop completes, the task was not found
+      alert(`Task "${selectedTask}" not found.`);
+    }
+  
     function updateSchedule() {
-      var taskList = document.getElementById('taskList');
-      var tasks = taskList.getElementsByTagName('li');
-      var totalTime = 0;
-
-      for (var i = 0; i < tasks.length; i++) {
-        var duration = tasks[i].textContent.split('-')[1].trim().split(' ')[0];
+      const taskList = document.getElementById('taskList');
+      const tasks = taskList.getElementsByClassName('taskItem');
+      let totalTime = 0;
+  
+      for (let i = 0; i < tasks.length; i++) {
+        const duration = tasks[i].textContent.split('-')[1].trim().split(' ')[0];
         totalTime += parseInt(duration, 10);
       }
-
+  
       alert(`Total time scheduled: ${totalTime} minutes`);
     }
-  </script>
+  </script>  
 
 </body>
 </html>
